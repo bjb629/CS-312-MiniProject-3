@@ -1,0 +1,142 @@
+<%- include("partials/header.ejs") %>
+
+<h1>Welcome To The Marvelous Blog</h1>
+
+<% if (user) { %>
+
+  <p>
+    Welcome, <%= user.name %>!
+    <a href="/logout">Sign Out</a>
+  </p>
+
+  <div class="form-box">
+    <h2>Create a Post</h2>
+
+    <form action="/submit" method="POST">
+
+      <label for="title">Title:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        required
+      >
+
+      <label for="content">Blog Content:</label>
+      <textarea
+        id="content"
+        name="content"
+        required
+      ></textarea>
+
+      <input
+        type="submit"
+        value="Create Post"
+      >
+
+    </form>
+  </div>
+
+<% } else { %>
+
+  <p>
+    <a href="/signin">Sign In</a>
+    or
+    <a href="/signup">Create an Account</a>
+    to create a post.
+  </p>
+
+<% } %>
+
+<h2>Blog Posts</h2>
+
+<% if (posts.length === 0) { %>
+
+  <p>No posts yet. Create the first post!</p>
+
+<% } else { %>
+
+  <% posts.forEach((post) => { %>
+
+    <% if (editId == post.blog_id) { %>
+
+      <div class="edit-box">
+
+        <h2>Edit Post</h2>
+
+        <form
+          action="/edit/<%= post.blog_id %>"
+          method="POST"
+        >
+
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value="<%= post.title %>"
+            required
+          >
+
+          <label for="content">Blog Content:</label>
+          <textarea
+            id="content"
+            name="content"
+            required
+          ><%= post.body %></textarea>
+
+          <input
+            type="submit"
+            value="Save Changes"
+          >
+
+        </form>
+
+        <a href="/">Cancel</a>
+
+      </div>
+
+    <% } else { %>
+
+      <article>
+
+        <h3><%= post.title %></h3>
+
+        <p class="post-info">
+          By <%= post.creator_name %>
+        </p>
+
+        <p class="post-info">
+          Created:
+          <%= new Date(post.date_created).toLocaleString() %>
+        </p>
+
+        <p>
+          <%= post.body %>
+        </p>
+
+        <% if (user && user.user_id === post.creator_user_id) { %>
+
+          <a href="/edit/<%= post.blog_id %>">Edit</a>
+
+          <form
+            action="/delete/<%= post.blog_id %>"
+            method="POST"
+          >
+            <input
+              type="submit"
+              value="Delete"
+            >
+          </form>
+
+        <% } %>
+
+      </article>
+
+    <% } %>
+
+  <% }) %>
+
+<% } %>
+
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,47 @@
+<%- include("partials/header.ejs") %>
+
+<h1>Create an Account</h1>
+
+<div class="form-box">
+
+  <form action="/signup" method="POST">
+
+    <label for="user_id">User ID:</label>
+    <input
+      type="text"
+      id="user_id"
+      name="user_id"
+      required
+    >
+
+    <label for="password">Password:</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      required
+    >
+
+    <label for="name">Name:</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+    >
+
+    <input
+      type="submit"
+      value="Sign Up"
+    >
+
+  </form>
+
+  <p>
+    Already have an account?
+    <a href="/signin">Sign In</a>
+  </p>
+
+</div>
+
+<%- include("partials/footer.ejs") %>
